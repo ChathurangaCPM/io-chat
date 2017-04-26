@@ -36,34 +36,30 @@ io.on('connection', function (socket) {
   		connections.splice(connections.indexOf(socket), 1);
   		console.log('Disconnected : %s socket connected', connections.length)
   	});
-  
+
   	socket.on('send message', function(data){
       // data.username,
       // data.message
-      
-      // users.forEach(function(user){
-      //    if(user.username === data.username){
-      //     io.sockets[user.socket].emit('')
-      //    }
-      // })
+			// console.log(data);
 
-  		io.sockets.emit('new message', {msg:data, user: socket.username});
+  		io.sockets.emit('new message', {msg:data, user: socket.username, socket: socket.id});
   	});
-  
+
   	// New user
   	socket.on('new user', function(data, callback){
   		callback(true);
   		socket.username	=	data;
-      users.push(socket.username);
-  		// users.push({socket: socket.id, username: socket.username});
-  		updateUsernames(socket.username);
+      // users.push(socket.username);
+  		users.push({socket: socket.id, username: socket.username});
+  		// updateUsernames(socket.username);
+  		updateUsernames({socket: socket.id, username: socket.username});
       // console.log(socket);
   	});
 
     socket.on('is-typing', function(data){
        io.sockets.emit('is-typing-client', data);
     })
-  
+
   	function updateUsernames(sinuser){
   		io.sockets.emit('get users', users);
       io.sockets.emit('get single user', sinuser);
