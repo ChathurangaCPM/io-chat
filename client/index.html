@@ -43,8 +43,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="rightside">
-					<header>
+				<div class="rightside" id="chatwindow" data-id="">
+					<header class="ctheader">
 						<span>EME - Public group chat</span>
 					</header>
 					<div class="chatwrapper"></div>
@@ -466,59 +466,51 @@
 			})
 
 			var socket	      		=	io.connect();
-			var $message 		  		=	$('#message');
-			var $chat	 		    		=	$('.chatwrapper');
+			var $message 		  	=	$('#message');
+			var $chat	 		    =	$('.chatwrapper');
 
-			var	$messageAre 			=	$('#messageAre');
-			var	$userFormAre 			=	$('#userFormAre');
-			var	$userForm 	 			=	$('#userForm');
-			var	$users  	 				=	$('.onlineuserswrapper');
-			var	$username  	 			=	$('#username');
-			var	$emojiicon  	 		=	$('#emojiicon');
+			var	$messageAre 		=	$('#messageAre');
+			var	$userFormAre 		=	$('#userFormAre');
+			var	$userForm 	 		=	$('#userForm');
+			var	$users  	 		=	$('.onlineuserswrapper');
+			var	$username  	 		=	$('#username');
+			var	$emojiicon  	 	=	$('#emojiicon');
 			var	$emojiwrapper 		=	$('.emojiwrapper');
-			var	$emojiicon  	 		=	$('#emojiicon');
-			var	$sinrow 					=	$('.sinrow');
+			var	$emojiicon  	 	=	$('#emojiicon');
+			var	$sinrow 			=	$('.sinrow');
 
 			var username;
 
-			/*if (annyang) {
-			  // Let's define our first command. First the text we expect, and then the function it should call
-			  var commands = {
-			    'open emoji': function() {
-			     	$emojiwrapper.toggle();
-			    },
-					'skype': function() {
-						$emojiwrapper.show();
-						$emojiwrapper.find('i.fa-skype').trigger('click');
-			    }
-			  };
-				annyang.addCallback('resultMatch', function(userSaid, commandText, phrases) {
-				  console.log(userSaid); // sample output: 'hello'
-				  //console.log(commandText); // sample output: 'hello (there)'
-				  //console.log(phrases); // sample output: ['hello', 'halo', 'yellow', 'polo', 'hello kitty']
-				});
+			// if (annyang) {
+			//   // Let's define our first command. First the text we expect, and then the function it should call
+			// 	var commands = {
+			// 		'open emoji': function() {
+			// 	 		$emojiwrapper.toggle();
+			// 		},
+			// 		'skype': function() {
+			// 			$emojiwrapper.show();
+			// 			$emojiwrapper.find('i.fa-skype').trigger('click');
+			// 		},
+			// 		'type that *tags' = typemesg;
+			// 	};
+			// 	annyang.addCallback('resultMatch', function(userSaid, commandText, phrases) {
+			// 	  console.log(userSaid); // sample output: 'hello'
+			// 	  //console.log(commandText); // sample output: 'hello (there)'
+			// 	  //console.log(phrases); // sample output: ['hello', 'halo', 'yellow', 'polo', 'hello kitty']
+			// 	});
 
-			  // Add our commands to annyang
-			  annyang.addCommands(commands);
+			// 	var typemesg(tag) = function(){
+			// 		console.log(tag);
+			// 	}
 
-			  // Start listening. You can call this here, or attach this call to an event, button, etc.
-			  annyang.start();
-			}*/
+			//   // Add our commands to annyang
+			//   annyang.addCommands(commands);
 
-			$message.keypress(function(e){
-			  if(e.keyCode == 13){
-			    var cleardata = $message.val();
-					var sendRedy  = cleardata.replace(/<\/?[^>]+(>|$)/g, "");
+			//   // Start listening. You can call this here, or attach this call to an event, button, etc.
+			//   annyang.start();
+			// }
 
-					if(sendRedy){
-						socket.emit('send message', sendRedy);
-						$message.val('');
-					}
-			  }else{
-			  	// IS typing some user
-			  	socket.emit('is-typing', {username: username});
-			  }
-			});
+
 			// function you can use:
 			function getSecondPart(str) {
 			    return str.split(':search')[1];
@@ -528,12 +520,6 @@
 				$emojiwrapper.toggle();
 			});
 
-			function indimsg(id) {
-				console.log($(this).attr('id'));
-			}
-
-
-
 			$emojiwrapper.find('img').on('click', function(){
 				var clickedval	=	$(this).attr('data-code');
 				$message.val(clickedval).focus();
@@ -541,18 +527,33 @@
 			});
 
 			var myFunction = function() {
-			  // alert('Click function');
-			  window.focus(); this.cancel();
+			  window.focus();
 			};
 
 			var myImg = "https://unsplash.it/600/600?image=777";
 
 
 			$(function(){
+				$message.keypress(function(e){
+				  if(e.keyCode == 13){
+				    var cleardata = $message.val();
+						var sendRedy  = cleardata.replace(/<\/?[^>]+(>|$)/g, "");
+
+						if(sendRedy){
+							socket.emit('send message', sendRedy);
+							$message.val('');
+						}
+				  }else{
+				  	// IS typing some user
+				  	// console.log(socket.id);
+				  	socket.emit('is-typing', {username: username});
+				  }
+				});
 
 				socket.on('new message', function(data){
-					console.log(data);
 					var datamessage	=	data.msg;
+					var soketid	=	data.socket;
+					// console.log(soketid);
 					htmlemotions = replaceEmotions(datamessage);
 					var emocode = [':)',';)',':(','>:o',':D',':\'(',':o',':p', 'b)',':x',':s',':$',':*',':/','<3',':&',':>','=D'];
 					var emocode_skype = [':_angel',':_angry',':_bandit',':_bhangra',':_bike',':_blush',':_bow',':_bug',':_bunny',':_busyday',':_call',':_cat',':_champagne',':_chappal',':_clap',':_computerrage',':_cool',':_cry',':_cwl',':_dance',':_discodancer',':_disgust',':_dog',':_doh',':_donkey',':_donttalktome',':_dream',':_drink',':_drunk',':_dull',':_eg',':_emo',':_envy',':_facepalm',':_fallinlove',':_fear',':_fubar',':_gran',':_handsinair',':_headbang',':_headphones',':_ladyvampire',':_lalala',':_mlt',':_monkey',':_movember',':_muscleman',':_nahi',':_naturescall',':_nazar',':_neil',':_nerdy',':_ninja',':_nod',':_ok',':_oliver',':_ontheloo',':_penguin',':_pig',':_poke',':_polarbear',':_poolparty',':_poop',':_praying',':_promise',':_puke',':_pullshot',':_pumpkin',':_punch',':_red',':_reindeer',':_rock',':_rofl',':_running',':_sad',':_santa',':_sksantamooning',':_sarcastic',':_selfie',':_shake',':_sheep',':_shivering',':_slap',':_sleepy',':_smile',':_smirk',':_smoke',':_speechless',':_surprised',':_swear',':_sweat',':_sintalk',':_talktothehand',':_taur',':_think',':_tired',':_tmi',':_tongueout',':_ttm',':_turkey',':_sinwait',':_waiting',':_whew',':_whistle',':_wink',':_wtf'];
@@ -560,7 +561,7 @@
 					if(jQuery.inArray(datamessage, emocode_skype) !== -1 || jQuery.inArray(datamessage, emocode) !== -1){
 				    	classchat	=	'singleemoji';
 					}else{
-							classchat	=	'emojiwithtext';
+						classchat	=	'emojiwithtext';
 					}
 
 					var message = data.msg;
@@ -590,7 +591,7 @@
 						  if(!isBrowserTabActive)
 						  	$("#easyNotify").easyNotify(options);
 					}else{
-						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>You</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
+						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
 					}
 
 					$chat.append(clientmsg);
@@ -619,13 +620,14 @@
 				socket.on('get users', function(data){
 					var html 	=	'';
 					for (i = 0; i < data.length; i++) {
-						console.log(data);
-						html += '<div class="sinrow" onclick="indimsg(this)" id="'+data[i].socket+'"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
+						// console.log(data);
+						html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
 					}
 					$users.html(html);
 				});
 
 				socket.on('is-typing-client', function(data){
+					// console.log(data);
 					if(username !== data.username){
 						$('#istyping').show().html('<span class="animated bounceIn">' + data.username + ' is Typing</span>');
 						setTimeout(function(){ $('#istyping').html('').hide(); }, 2000);

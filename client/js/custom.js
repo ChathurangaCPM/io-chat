@@ -147,3 +147,12 @@ function replaceEmotions(html){
 
     return html.replace(new RegExp(search, 'gm'), replaceCallback);
 }
+
+function indimsg(id) {
+    // var clickedid = $(this).attr('id');
+    var $chatwindow = $('#chatwindow');
+    $chatwindow.attr('data-id', id);
+    var indexname = $('#'+id).find('span').html();
+    console.log(indexname);
+    $chatwindow.find('header.ctheader span').html('Chat with '+indexname);
+}
