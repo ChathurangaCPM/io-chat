@@ -1,0 +1,337 @@
+<html>
+	<head>
+		<title>chat io</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+
+		<script src="js/annyang.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="js/cookie.js"></script>
+		<script src="js/easyNotify.js"></script>
+		<script src="js/custom.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div id="userFormAre" class="row">
+				<div class="col-md-12">
+					<form id="userForm">
+						<div class="userimgwrapper">
+							 <img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive"> 
+						</div>
+						<div class="formgroup">
+							<label for="username">Enter user</label>
+							<input name="" id="username" class="form-control" >
+							<span>Press Enter key to continue</span>
+							<!-- <input type="submit" class="btn btn-primary" value="Login"> -->
+						</div>
+					</form>
+				</div>
+			</div>
+			<div id="messageAre" class="row">
+				<div class="leftside">
+					<header>
+						<span>Online Users</span>
+					</header>
+					<div class="onlineuserswrapper">
+						<div class="sinrow">
+							<div class="userImg">
+								<img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt="">
+							</div>
+							<span>User Name</span>
+						</div>
+					</div>
+				</div>
+				<div class="rightside">
+					<header>
+						<span>EME - Public group chat</span>
+					</header>
+					<div class="chatwrapper"></div>
+					<div class="writewrapper">
+						<div class="newcon"></div>
+						<div id="istyping"></div>
+						<div class="emojiwrapper">
+							<ul class="list-inline" id="selectemoji">
+								<li class="active" data-id="emoji">
+									<i class="fa fa-smile-o"></i>
+								</li>
+								<li data-id="skype">
+									<i class="fa fa-skype"></i>
+								</li>
+							</ul>
+							<div class="emojiwindow">
+								<div id="emoji" class="tabwrapper active">
+									<div class="emojiicon">
+										<img src="img/emoji/1f642.png" data-code=":)" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/2639.png" data-code=":(" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f61b.png" data-code=":p" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f609.png" data-code=";)" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f60e.png" data-code="d)" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f627.png" data-code="d:" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f62c.png" data-code=":d" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f603.png" data-code="=)" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/1f615.png" data-code=":/" class="img-responsive" />
+									</div>
+									<!-- <div class="emojiicon">
+										<img src="img/emoji/1f603.png" class="img-responsive" />
+									</div> -->
+								</div>
+								<div id="skype" class="tabwrapper">
+									<div class="emojiicon">
+										<img src="img/emoji/skype/angel.gif" data-code=":angel" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/angry.gif" data-code=":angry" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/bandit.gif" data-code=":bandit" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/bhangra.gif" data-code=":bhangra" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/bike.gif" data-code=":bike" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/blush.gif" data-code=":blush" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/bow.gif" data-code=":bow" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/bug.gif" data-code=":bug" class="img-responsive" />
+									</div>
+									<div class="emojiicon">
+										<img src="img/emoji/skype/bunny:gif" data-code=":bunny" class="img-responsive" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="formgroup messageForm">
+							<div class="wrapwriter">
+								<input type="text" name="" placeholder="Enter your message" id="message"  class="form-control">
+								<div class="chatoptions">
+									<ul class="list-inline">
+										<li>
+											<i class="fa fa-smile-o" id="emojiicon"></i>
+										</li>
+										<li>
+											<i class="fa fa-picture-o" id="selectimage"></i>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<span class="text-right">Developed by <a href="">CPM</a></span>
+			</div>
+		</div>
+		<script>
+			var emocode = [];
+			var isBrowserTabActive;
+			$(window).on("blur focus", function(e) {
+			    var prevType = $(this).data("prevType");
+
+			    if (prevType != e.type) {   //  reduce double fire issues
+			        switch (e.type) {
+			            case "blur":
+			                // do work
+			                isBrowserTabActive = false;
+			                break;
+			            case "focus":
+			                // do work
+			                isBrowserTabActive = true;
+			                break;
+			        }
+			    }
+
+			    $(this).data("prevType", e.type);
+			})
+
+			var socket	      		=	io.connect();
+			var $message 		  	=	$('#message');
+			var $chat	 		    =	$('.chatwrapper');
+
+			var	$messageAre 		=	$('#messageAre');
+			var	$userFormAre 		=	$('#userFormAre');
+			var	$userForm 	 		=	$('#userForm');
+			var	$users  	 		=	$('.onlineuserswrapper');
+			var	$username  	 		=	$('#username');
+			var	$emojiicon  	 	=	$('#emojiicon');
+			var	$emojiwrapper 		=	$('.emojiwrapper');
+
+			var username;
+			 
+			$message.keypress(function(e){
+			  if(e.keyCode == 13){
+			     var cleardata = $message.val();
+					var sendRedy  = cleardata.replace(/<\/?[^>]+(>|$)/g, "");
+
+					if(sendRedy){
+						socket.emit('send message', sendRedy);
+						$message.val('');
+					}
+			  }else{
+			  	// IS typing some user
+			  	socket.emit('is-typing', {username: username});
+			  }
+			});
+			// function you can use:
+			function getSecondPart(str) {
+			    return str.split(':search')[1];
+			}
+
+			$emojiicon.on('click', function(e){
+				$emojiwrapper.toggle();
+				window.open('http://stash-cmb.eme-devops.com/projects/WEB/repos/www.aitkenspencehotels.com/browse','mywindow').focus()
+			});
+
+			$emojiwrapper.find('img').on('click', function(){
+				var clickedval	=	$(this).attr('data-code');
+				$message.val(clickedval).focus();
+				$emojiwrapper.toggle();
+			});
+
+			var myFunction = function() {
+			  // alert('Click function');
+			  window.focus(); this.cancel();
+			};
+
+			function openWin(doFocus){
+			    myWindow=window.open('','mywindow');
+			    myWindow.document.write("<p>This is 'myWindow'</p>");
+			    if(doFocus)
+			        myWindow.focus();
+			}
+
+			var myImg = "https://unsplash.it/600/600?image=777";
+
+
+			$(function(){
+
+				socket.on('new message', function(data){
+					var datamessage	=	data.msg;
+
+					// use the function:
+					if(getSecondPart(datamessage) != undefined){
+						// console.log(getSecondPart(datamessage));
+						setdocu	=	'http://api.duckduckgo.com/?q='+datamessage+'&format=json';
+						$.getJSON(setdocu, function(result){
+				            $.each(result, function(i, field){
+				            	console.log(field);
+				                // $("div").append(field + " ");
+				            });
+				        });
+					}
+
+					
+					// var Stringmsg = datamessage.substring(datamessage.lastIndexOf(":"),datamessage.lastIndexOf(" "));
+					htmlemotions = replaceEmotions(datamessage);
+
+					// console.log(htmlemotions);
+					var emocode = [':)',';)',':(','>:o',':D',':\'(',':o',':p', 'b)',':x',':s',':$',':*',':/','<3',':&',':>','=D', ':angel',':angry',':bandit'];
+
+					if(jQuery.inArray(datamessage, emocode) !== -1){
+				    	classchat	=	'singleemoji';
+					}else{
+						classchat	=	'emojiwithtext';
+					}
+					
+					var message = data.msg;
+
+					message 	= replaceEmotions(message);
+
+					var currentdate = new Date(); 
+					var datetime =	 currentdate.getDate() + "/"
+					                + (currentdate.getMonth()+1)  + "/" 
+					                + currentdate.getFullYear() + " @ "  
+					                + currentdate.getHours() + ":"  
+					                + currentdate.getMinutes();
+
+					if(data.user !== username){
+						var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
+
+						var options = {
+						    title:data.user,
+						    options: {
+						      body: message,
+						      icon: myImg,
+						      lang: 'en-US',
+						      onClick: myFunction
+						    }
+						  };
+						  // console.log(options);
+						  if(!isBrowserTabActive)
+						  	$("#easyNotify").easyNotify(options);
+					}else{
+						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>You</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
+					}
+
+					$chat.append(clientmsg);
+
+					$chat.animate({scrollTop:$chat[0].scrollHeight}, 'slow');
+				});
+
+				$userForm.submit(function(e){
+					e.preventDefault();
+					username = $username.val();
+					if (username == '' || username == ' ') {
+						$username.css("border", "1px solid red");
+					}else{
+						socket.emit('new user', $username.val(), function(data){
+							if(data){
+								$userFormAre.hide();
+								$messageAre.show();	
+
+							}
+						});
+						Cookies.set('name', username);
+						$username.val('');
+					}
+				});
+
+				socket.on('get users', function(data){
+					var html 	=	'';
+					for (i = 0; i < data.length; i++) {
+						html += '<div class="sinrow"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div><span>'+data[i]+'</span></div>';
+					}
+					$users.html(html);
+				});
+
+				socket.on('is-typing-client', function(data){
+					if(username !== data.username){
+						$('#istyping').show().html('<span class="animated bounceIn">' + data.username + ' is Typing</span>');
+						setTimeout(function(){ $('#istyping').html('').hide(); }, 2000);
+					}
+				});
+
+				socket.on('get single user', function(data){
+					if (data != null) {
+						$('.newcon').show().html('<span class="newconnection animated bounceIn">'+data+' is now connected with your conversation</span>');
+						setTimeout(function(){
+							$('.newcon').hide();
+						}, 8000);
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
