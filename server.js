@@ -57,7 +57,7 @@ io.on('connection', function (socket) {
   	});
 
     socket.on('is-typing', function(data){
-       io.sockets.emit('is-typing-client', data);
+       io.sockets.emit('is-typing-client', {socket: socket.id, username: data.username});
     })
 
   	function updateUsernames(sinuser){

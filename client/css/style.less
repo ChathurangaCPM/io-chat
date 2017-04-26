@@ -127,7 +127,7 @@
 
 
 body{
-	background: #e9ebee;
+	background: #000;
 	font-family: 'Roboto', sans-serif;
 	#userFormAre{
 		background: #fff;
@@ -180,6 +180,7 @@ body{
 		height: 500px;
 		transform:translateY(-50%);
 		display: none;
+		border-radius: 3px;
 		.leftside, .rightside{
 			display: inline-block;
 			vertical-align: top;
@@ -197,13 +198,18 @@ body{
 			width: 30%;
 			height: 500px;
 			.onlineuserswrapper{
-				height: auto;
+				height: 454px;
 				background: rgba(0,0,0,0.02);
 				overflow-y: auto;
 				.sinrow{
 					font-size: 0px;
 					border-bottom:1px solid rgba(0, 0, 0, 0.05);
 					padding: 5px;
+					cursor: pointer;
+					&:hover{
+						background: #1c4ba7;
+						color: #fff;
+					}
 					.userImg, .span{
 						display: inline-block;
 						vertical-align: middle;
