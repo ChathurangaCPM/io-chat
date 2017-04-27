@@ -430,7 +430,7 @@
 										<li>
 											<i class="fa fa-smile-o" id="emojiicon"></i>
 										</li>
-										<li>
+										<li disabled>
 											<i class="fa fa-picture-o" id="selectimage"></i>
 										</li>
 									</ul>
@@ -590,6 +590,7 @@
 						  // console.log(options);
 						  if(!isBrowserTabActive)
 						  	$("#easyNotify").easyNotify(options);
+							// changeTitle();
 					}else{
 						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
 					}
