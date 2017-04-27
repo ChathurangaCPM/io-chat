@@ -156,3 +156,11 @@ function indimsg(id) {
     console.log(indexname);
     $chatwindow.find('header.ctheader span').html('Chat with '+indexname);
 }
+
+function changeTitle() {
+    var title = $(document).prop('title'); 
+    if (title.indexOf('>>>') == -1) {
+        // setTimeout(changeTitle, 3000);  
+        $(document).prop('title', '>'+title);
+    }
+}
