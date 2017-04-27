@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script> -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="js/cookie.js"></script>
 		<script src="js/easyNotify.js"></script>
@@ -18,7 +18,7 @@
 				<div class="col-md-12">
 					<form id="userForm">
 						<div class="userimgwrapper">
-							 <img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive">
+							 <img src="img/man.jpg" class="img-responsive">
 						</div>
 						<div class="formgroup">
 							<label for="username">Enter user</label>
@@ -37,7 +37,7 @@
 					<div class="onlineuserswrapper">
 						<div class="sinrow">
 							<div class="userImg">
-								<img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt="">
+								<img src="img/man.jpg" class="img-responsive" alt="" title="" alt="">
 							</div>
 							<span>User Name</span>
 						</div>
@@ -576,7 +576,7 @@
 					                + currentdate.getMinutes();
 
 					if(data.user !== username){
-						var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
+						var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="img/man.jpg" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
 
 						var options = {
 						    title:data.user,
@@ -592,7 +592,7 @@
 						  	$("#easyNotify").easyNotify(options);
 							// changeTitle();
 					}else{
-						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
+						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="img/man.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
 					}
 
 					$chat.append(clientmsg);
@@ -622,7 +622,7 @@
 					var html 	=	'';
 					for (i = 0; i < data.length; i++) {
 						// console.log(data);
-						html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
+						html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="img/man.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
 					}
 					$users.html(html);
 				});
