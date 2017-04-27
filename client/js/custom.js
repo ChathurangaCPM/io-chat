@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $(document).ready(function(){
 	$('#selectemoji li').on('click', function(){
 		var dataid = $(this).attr('data-id');
@@ -163,4 +164,3 @@ function changeTitle() {
         // setTimeout(changeTitle, 3000);  
         $(document).prop('title', '>'+title);
     }
-}
