@@ -6,6 +6,10 @@ $(document).ready(function(){
 		$('.emojiwindow .tabwrapper').removeClass('active');
 		$('.emojiwindow .tabwrapper#'+dataid).addClass('active');
 	});
+
+	// Load emoji
+	// $('#emoji').load('inc/normal-emoji.html');
+	// $('#skype').load('inc/skype-emoji.html');
 });
 function replaceEmotions(html){
     var icons = {
