@@ -97,7 +97,7 @@
 									</div> -->
 								</div>
 								<div id="skype" class="tabwrapper">
-									<div class="emojiicon">
+									<!-- <div class="emojiicon">
 										<img src="img/emoji/skype/shivering.gif" data-code=":_shivering" class="img-responsive">
 									</div>
 									<div class="emojiicon">
@@ -421,7 +421,7 @@
 									</div>
 									<div class="emojiicon">
 										<img src="img/emoji/skype/sheep.gif" data-code=":_sheep" class="img-responsive">
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>
@@ -551,14 +551,15 @@
 				});
 
 				socket.on('new message', function(data){
-					var datamessage	=	data.msg;
-					var soketid	=	data.socket;
+					var datamessage		=	data.msg;
+					var datamessagelower=	datamessage.toLowerCase();
+					var soketid			=	data.socket;
 					// console.log(soketid);
-					htmlemotions = replaceEmotions(datamessage);
-					var emocode = [':)',';)',':(','>:o',':D',':\'(',':o',':p', 'b)',':x',':s',':$',':*',':/','<3',':&',':>','=D'];
+					htmlemotions = replaceEmotions(datamessagelower);
+					var emocode = [':)',';)',':(','>:o',':d',':\'(',':o',':p', 'b)',':x',':s',':$',':*',':/','<3',':&',':>','=d'];
 					var emocode_skype = [':_angel',':_angry',':_bandit',':_bhangra',':_bike',':_blush',':_bow',':_bug',':_bunny',':_busyday',':_call',':_cat',':_champagne',':_chappal',':_clap',':_computerrage',':_cool',':_cry',':_cwl',':_dance',':_discodancer',':_disgust',':_dog',':_doh',':_donkey',':_donttalktome',':_dream',':_drink',':_drunk',':_dull',':_eg',':_emo',':_envy',':_facepalm',':_fallinlove',':_fear',':_fubar',':_gran',':_handsinair',':_headbang',':_headphones',':_ladyvampire',':_lalala',':_mlt',':_monkey',':_movember',':_muscleman',':_nahi',':_naturescall',':_nazar',':_neil',':_nerdy',':_ninja',':_nod',':_ok',':_oliver',':_ontheloo',':_penguin',':_pig',':_poke',':_polarbear',':_poolparty',':_poop',':_praying',':_promise',':_puke',':_pullshot',':_pumpkin',':_punch',':_red',':_reindeer',':_rock',':_rofl',':_running',':_sad',':_santa',':_sksantamooning',':_sarcastic',':_selfie',':_shake',':_sheep',':_shivering',':_slap',':_sleepy',':_smile',':_smirk',':_smoke',':_speechless',':_surprised',':_swear',':_sweat',':_sintalk',':_talktothehand',':_taur',':_think',':_tired',':_tmi',':_tongueout',':_ttm',':_turkey',':_sinwait',':_waiting',':_whew',':_whistle',':_wink',':_wtf'];
 
-					if(jQuery.inArray(datamessage, emocode_skype) !== -1 || jQuery.inArray(datamessage, emocode) !== -1){
+					if(jQuery.inArray(datamessagelower, emocode_skype) !== -1 || jQuery.inArray(datamessagelower, emocode) !== -1){
 				    	classchat	=	'singleemoji';
 					}else{
 						classchat	=	'emojiwithtext';
@@ -610,7 +611,6 @@
 							if(data){
 								$userFormAre.hide();
 								$messageAre.show();
-
 							}
 						});
 						Cookies.set('name', username);
