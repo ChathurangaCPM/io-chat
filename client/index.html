@@ -1,12 +1,15 @@
 <html>
 	<head>
 		<title>chat io</title>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>-->
 		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="js/cookie.js"></script>
 		<script src="js/easyNotify.js"></script>
@@ -18,7 +21,7 @@
 				<div class="col-md-12">
 					<form id="userForm">
 						<div class="userimgwrapper">
-							 <img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive">
+							 <img src="img/man.jpg" class="img-responsive">
 						</div>
 						<div class="formgroup">
 							<label for="username">Enter user</label>
@@ -37,7 +40,7 @@
 					<div class="onlineuserswrapper">
 						<div class="sinrow">
 							<div class="userImg">
-								<img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt="">
+								<img src="img/man.jpg" class="img-responsive" alt="" title="" alt="">
 							</div>
 							<span>User Name</span>
 						</div>
@@ -94,7 +97,7 @@
 									</div> -->
 								</div>
 								<div id="skype" class="tabwrapper">
-									<div class="emojiicon">
+									<!-- <div class="emojiicon">
 										<img src="img/emoji/skype/shivering.gif" data-code=":_shivering" class="img-responsive">
 									</div>
 									<div class="emojiicon">
@@ -418,7 +421,7 @@
 									</div>
 									<div class="emojiicon">
 										<img src="img/emoji/skype/sheep.gif" data-code=":_sheep" class="img-responsive">
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>
@@ -429,9 +432,6 @@
 									<ul class="list-inline">
 										<li>
 											<i class="fa fa-smile-o" id="emojiicon"></i>
-										</li>
-										<li>
-											<i class="fa fa-picture-o" id="selectimage"></i>
 										</li>
 									</ul>
 								</div>
@@ -551,14 +551,15 @@
 				});
 
 				socket.on('new message', function(data){
-					var datamessage	=	data.msg;
-					var soketid	=	data.socket;
+					var datamessage		=	data.msg;
+					var datamessagelower=	datamessage.toLowerCase();
+					var soketid			=	data.socket;
 					// console.log(soketid);
-					htmlemotions = replaceEmotions(datamessage);
-					var emocode = [':)',';)',':(','>:o',':D',':\'(',':o',':p', 'b)',':x',':s',':$',':*',':/','<3',':&',':>','=D'];
+					htmlemotions = replaceEmotions(datamessagelower);
+					var emocode = [':)',';)',':(','>:o',':d',':\'(',':o',':p', 'b)',':x',':s',':$',':*',':/','<3',':&',':>','=d'];
 					var emocode_skype = [':_angel',':_angry',':_bandit',':_bhangra',':_bike',':_blush',':_bow',':_bug',':_bunny',':_busyday',':_call',':_cat',':_champagne',':_chappal',':_clap',':_computerrage',':_cool',':_cry',':_cwl',':_dance',':_discodancer',':_disgust',':_dog',':_doh',':_donkey',':_donttalktome',':_dream',':_drink',':_drunk',':_dull',':_eg',':_emo',':_envy',':_facepalm',':_fallinlove',':_fear',':_fubar',':_gran',':_handsinair',':_headbang',':_headphones',':_ladyvampire',':_lalala',':_mlt',':_monkey',':_movember',':_muscleman',':_nahi',':_naturescall',':_nazar',':_neil',':_nerdy',':_ninja',':_nod',':_ok',':_oliver',':_ontheloo',':_penguin',':_pig',':_poke',':_polarbear',':_poolparty',':_poop',':_praying',':_promise',':_puke',':_pullshot',':_pumpkin',':_punch',':_red',':_reindeer',':_rock',':_rofl',':_running',':_sad',':_santa',':_sksantamooning',':_sarcastic',':_selfie',':_shake',':_sheep',':_shivering',':_slap',':_sleepy',':_smile',':_smirk',':_smoke',':_speechless',':_surprised',':_swear',':_sweat',':_sintalk',':_talktothehand',':_taur',':_think',':_tired',':_tmi',':_tongueout',':_ttm',':_turkey',':_sinwait',':_waiting',':_whew',':_whistle',':_wink',':_wtf'];
 
-					if(jQuery.inArray(datamessage, emocode_skype) !== -1 || jQuery.inArray(datamessage, emocode) !== -1){
+					if(jQuery.inArray(datamessagelower, emocode_skype) !== -1 || jQuery.inArray(datamessagelower, emocode) !== -1){
 				    	classchat	=	'singleemoji';
 					}else{
 						classchat	=	'emojiwithtext';
@@ -576,7 +577,7 @@
 					                + currentdate.getMinutes();
 
 					if(data.user !== username){
-						var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
+						var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="img/man.jpg" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
 
 						var options = {
 						    title:data.user,
@@ -590,8 +591,9 @@
 						  // console.log(options);
 						  if(!isBrowserTabActive)
 						  	$("#easyNotify").easyNotify(options);
+							// changeTitle();
 					}else{
-						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
+						var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="img/man.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
 					}
 
 					$chat.append(clientmsg);
@@ -609,7 +611,6 @@
 							if(data){
 								$userFormAre.hide();
 								$messageAre.show();
-
 							}
 						});
 						Cookies.set('name', username);
@@ -621,7 +622,7 @@
 					var html 	=	'';
 					for (i = 0; i < data.length; i++) {
 						// console.log(data);
-						html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="http://drchaedentistry.com/wp-content/uploads/2012/02/smiling-man-4.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
+						html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="img/man.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
 					}
 					$users.html(html);
 				});
