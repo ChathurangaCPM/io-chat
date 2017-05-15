@@ -44,7 +44,13 @@ io.on('connection', function (socket) {
 
   		io.sockets.emit('new message', {msg:data, user: socket.username, socket: socket.id});
   	});
-
+    // Already loging user
+    socket.on('setlog', function(data, callback){
+      callback(true);
+      socket.username = data;
+      users.push({socket: socket.id, username: socket.username});
+      updateUsernames({socket: socket.id, username: socket.username});
+    });
   	// New user
   	socket.on('new user', function(data, callback){
   		callback(true);
@@ -64,6 +70,7 @@ io.on('connection', function (socket) {
   		io.sockets.emit('get users', users);
       io.sockets.emit('get single user', sinuser);
   	}
+    // console.log(users);
   });
 
 // function updateRoster() {
