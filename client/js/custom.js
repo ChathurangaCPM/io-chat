@@ -7,6 +7,7 @@ $(document).ready(function(){
 		$('.emojiwindow .tabwrapper#'+dataid).addClass('active');
 	});
 });
+
 function replaceEmotions(html){
     var icons = {
         ':)':'1f642.png',
