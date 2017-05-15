@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
 	$('#selectemoji li').on('click', function(){
 		var dataid = $(this).attr('data-id');
 		$(this).addClass('active');
@@ -127,7 +128,7 @@ function loadingicons(){
         ':_swear':'/skype/swear.gif',
         ':_sweat':'/skype/sweat.gif',
         ':_sintalk':'/skype/talk.gif',
-                ':_sintalk':'/skype/talk.gif',
+        ':_sintalk':'/skype/talk.gif',
         ':_talktothehand':'/skype/talktothehand.gif',
         ':_taur':'/skype/taur.gif',
         ':_think':'/skype/think.gif',
@@ -143,8 +144,12 @@ function loadingicons(){
         ':_wink':'/skype/wink.gif',
         ':_wtf':'/skype/wtf.gif'
         }
+
     return icons;
 }
+
+
+
 
 function replaceEmotions(html){
     // varloadingicons();
