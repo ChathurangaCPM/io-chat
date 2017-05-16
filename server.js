@@ -3,26 +3,26 @@
 //
 // A simple chat server using Socket.IO, Express, and Async.
 //
-var http = require('http');
-var path = require('path');
+var http    = require('http');
+var path    = require('path');
 
-var async = require('async');
-var socketio = require('socket.io');
+var async   = require('async');
+var socketio= require('socket.io');
 var express = require('express');
 
-var router = express();
-var server = http.createServer(router);
-var io = socketio.listen(server);
+var router  = express();
+var server  = http.createServer(router);
+var io      = socketio.listen(server);
 
 router.use(express.static(path.resolve(__dirname, 'client')));
-var messages = [];
-var sockets = [];
+var messages  = [];
+var sockets   = [];
 
-users		=	[];
-connections	=	[];
+users         =	[];
+connections	  =	[];
 
 router.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function (socket) {
