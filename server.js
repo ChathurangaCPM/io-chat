@@ -3,12 +3,14 @@
 //
 // A simple chat server using Socket.IO, Express, and Async.
 //
-var http    = require('http');
-var path    = require('path');
+var http    =   require('http');
+var path    =   require('path');
 
-var async   = require('async');
-var socketio= require('socket.io');
-var express = require('express');
+
+var async   =   require('async');
+var socketio=   require('socket.io');
+var express =   require('express');
+var mysql   =   require('mysql');
 
 var router  = express();
 var server  = http.createServer(router);
@@ -21,12 +23,19 @@ var sockets   = [];
 users         =	[];
 connections	  =	[];
 
+var connectionsmsql = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database : 'samplenodedb'
+});
+
 router.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function (socket) {
-   connections.push(socket);
+    connections.push(socket);
   	console.log('Connected : %s socket connected', connections.length)
   	socket.on('disconnect', function(data){
   		if (!socket.username) return;
@@ -55,7 +64,32 @@ io.on('connection', function (socket) {
   	socket.on('new user', function(data, callback){
   		callback(true);
   		socket.username	=	data;
-      // users.push(socket.username);
+        // users.push(socket.username);
+        connectionsmsql.connect(function(error){
+            if (!!error) {
+                console.log('Db not connected');
+            }else{
+                console.log('Db connected successfully');
+                registername    = socket.username;
+                socket_id       = socket.id;
+                var currentdate = new Date();
+                var datetime =   currentdate.getDate() + "/"
+                                + (currentdate.getMonth()+1)  + "/"
+                                + currentdate.getFullYear() + "@"
+                                + currentdate.getHours() + ":"
+                                + currentdate.getMinutes();
+
+                var sql = "INSERT INTO users (user_name, socket_id, registered) VALUES ?";
+
+                var values = [[registername,socket_id,datetime]];
+
+                connectionsmsql.query(sql, [values], function (err, result) {
+
+                if (err) throw err;
+                    console.log("Number of records inserted: " + result.affectedRows);
+                });
+            }
+        });
   		users.push({socket: socket.id, username: socket.username});
   		// updateUsernames(socket.username);
   		updateUsernames({socket: socket.id, username: socket.username});
@@ -68,7 +102,7 @@ io.on('connection', function (socket) {
 
   	function updateUsernames(sinuser){
   		io.sockets.emit('get users', users);
-      io.sockets.emit('get single user', sinuser);
+        io.sockets.emit('get single user', sinuser);
   	}
     // console.log(users);
   });

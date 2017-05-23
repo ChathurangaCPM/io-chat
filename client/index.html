@@ -16,14 +16,10 @@
 		
 	</head>
 	<body>
-	    <form id="form1" runat="server">
-	        
-	        <!-- <img id="blah" src="#" alt="your image" /> -->
-	    </form>
 		<div class="container">
 			<div id="userFormAre" class="row">
 				<div class="col-md-12">
-					<form id="userForm">
+					<form id="userForm" enctype="multipart/form-data" action="/api/photo" method="post">
 						<div class="userimgwrapper">
 							<div class="uploadimg">
 								<i class="fa fa-camera" aria-hidden="true"></i>
@@ -31,9 +27,13 @@
 							<input type='file' id="imgInp"/>
 						</div>
 						<div class="formgroup">
-							<label for="username">Enter user name</label>
-							<input name="" id="username" class="form-control" >
-							<span>Press Enter key to continue</span>
+							<label for="username">New user register</label>
+							<input name="username" id="username" type="text" class="form-control" placeholder="User name"><br/>
+							<input name="useremail" id="useremail" type="email" class="form-control" placeholder="Email"><br/>
+							<input name="userpass" id="userpass" type="password" class="form-control" placeholder="Email"><br/>
+							<span>All field are required</span>
+							<input type="submit" class="submitbtn" value="Sing Up">
+							<div class="clear"></div>
 						</div>
 					</form>
 				</div>

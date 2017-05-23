@@ -2,6 +2,7 @@
 *{
 	margin: 0px;
 }
+@basecolor : #4285F4;
 
 // Animations script
 .animated {
@@ -127,7 +128,7 @@
 
 
 body{
-	background: #000;
+	background:url(../img/stock-photo-212970175.jpg)no-repeat center center;
 	font-family: 'Roboto', sans-serif;
 	#userFormAre{
 		background: #fff;
@@ -138,7 +139,7 @@ body{
 		left: 50%;
 		top: 50%;
 		transform:translate(-50%, -50%);
-		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
 		text-align: center;
 		.userimgwrapper{
 			width: 100px;
@@ -192,6 +193,19 @@ body{
 				color: rgba(0, 0, 0, 0.4);
 				text-align: left;
 				display: block;
+			}
+			input.submitbtn{
+				border: 1px solid transparent;
+				border-radius: 3px;
+				padding: 8px;
+				color: #fff;
+				background: @basecolor;
+				float: right;;
+				width: 120px;
+
+				&:focus{
+					box-shadow: 0 0 0 0.2em #4d90fe;
+				}
 			}
 		}
 	}
