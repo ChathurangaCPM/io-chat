@@ -9,12 +9,20 @@ var	$userFormAre 		=	$('#userFormAre');
 var	$userForm 	 		=	$('#userForm');
 var	$users  	 		=	$('.onlineuserswrapper');
 var	$username  	 		=	$('#username');
+var	$useremail  	 	=	$('#useremail');
+var	$userpass  	 		=	$('#userpass');
 
 var	$sinrow 			=	$('.sinrow');
 
-var cookiename 			= 	Cookies.get('name');
+var cookiename 			= 	document.cookie;
+var cooksep 			=	cookiename.split("; username=").pop().split(";").shift();
+var getuserbanecook 	=	cooksep.split("=");
+var cooksep 			=	cookiename.split("; profileimg=").pop().split(";").shift();
+var getuserprofile 		=	cooksep.split("=");
+
 
 var username;
+
 
 // if (annyang) {
 //   // Let's define our first command. First the text we expect, and then the function it should call
@@ -76,6 +84,7 @@ $(function(){
 	}
 
 	socket.on('new message', function(data){
+		console.log(data.user);
 		var datamessage		=	data.msg;
 		var datamessagelower=	datamessage.toLowerCase();
 		var soketid			=	data.socket;
@@ -101,8 +110,8 @@ $(function(){
 		                + currentdate.getHours() + ":"
 		                + currentdate.getMinutes();
 
-		if(data.user !== cookiename){
-			var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="img/man.jpg" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
+		if(data.user.username !== getuserbanecook[1]){
+			var clientmsg 	= '<div class="chatrow '+ classchat +' clientmsg animated zoomIn"><div class="userImg"><img src="'+data.user.profileimg+'" class="img-responsive" alt="" title="" alt=""></div><div class="chatinfor"><span>'+data.user.username+'</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div></div>';
 
 			var options = {
 			    title:data.user,
@@ -118,40 +127,66 @@ $(function(){
 			  	$("#easyNotify").easyNotify(options);
 				// changeTitle();
 		}else{
-			var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user+'(You)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="img/man.jpg" class="img-responsive" alt="" title="" alt=""></div></div>';;
+			var clientmsg 	= '<div class="chatrow selfmsg '+ classchat +' animated zoomIn"><div class="chatinfor"><span>'+data.user.username+'(Me)</span><div class="chatarea">'+message+'</div><small><i>'+datetime+'</i></small></div><div class="userImg"><img src="'+data.user.profileimg+'" class="img-responsive" alt="" title="" alt=""></div></div>';;
 		}
 
 		$chat.append(clientmsg);
 
 		$chat.animate({scrollTop:$chat[0].scrollHeight}, 'fast');
-	});
+	});	
+	console.log(cooksep);
 
 	// login with cookie
-	
-	if(cookiename){
-		socket.emit('setlog', cookiename, function(data){
+	profilebob 	=	$userForm.find('#uploadblog').attr('data-pro');
+	if(getuserbanecook[1]){
+		if(profilebob){
+			ifprofile = profilebob;
+		}else{
+			ifprofile = 'http://www.nationaltenders.com/images/users/default_user.png';
+		}
+		dataset = {
+			username : getuserbanecook[1],
+			profileimg : ifprofile
+		}
+		socket.emit('setlog', dataset, function(data){
 			$userFormAre.hide();
 			$messageAre.show();
 		});
 	}else{
-		Cookies.remove('name');
+		document.cookie = "username=; usersocketid=;";
 		$userFormAre.show();
 		$messageAre.hide();
 		$userForm.submit(function(e){
 			e.preventDefault();
-			username = $username.val();
+			username 	= 	$username.val();
+			useremail 	= 	$useremail.val();
+			userpass 	= 	$userpass.val();
+			// profilebob 	=	$userForm.find('#uploadblog').attr('data-pro');
+			if(profilebob){
+				ifprofile = profilebob;
+			}else{
+				ifprofile = 'http://www.nationaltenders.com/images/users/default_user.png';
+			}
+			userdata = {
+				username : username,
+				useremail : useremail,
+				userpass : userpass,
+				profileimg : ifprofile
+			}
+
 			if (username == '' || username == ' ') {
 				$username.css("border", "1px solid red");
 			}else{
-				socket.emit('new user', $username.val(), function(data){
+				socket.emit('new user', userdata, function(data){
 					if(data){
 						$userFormAre.hide();
 						$messageAre.show();
 						profileimg = $('.userimgwrapper').attr("data-pro");
-						Cookies.set('name', username);
-						Cookies.set('id', socket.socket.sessionid);
-						Cookies.set('profileimg', profileimg);
-						location.reload();
+						document.cookie = "username="+username;
+						document.cookie = "usersocketid="+socket.socket.sessionid;
+						document.cookie = "profileimg="+ifprofile;
+						
+						// location.reload();
 					}
 				});
 				$username.val('');
@@ -162,8 +197,8 @@ $(function(){
 	socket.on('get users', function(data){
 		var html 	=	'';
 		for (i = 0; i < data.length; i++) {
-			// console.log(data);
-			html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="img/man.jpg" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
+			console.log(data);
+			html += '<div class="sinrow" onClick="indimsg(this.id)" id="'+data[i].socket+'"><div class="userImg"><img src="'+data[i].profileimg+'" class="img-responsive" title="'+data[i].username+'" alt="'+data[i].username+'"></div><span>'+data[i].username+'</span></div>';
 		}
 		$users.html(html);
 	});

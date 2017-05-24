@@ -71,6 +71,7 @@ function readURL(input) {
             var fakimgpath = e.target.result;
             $('.userimgwrapper').attr("style", "background-image:url("+fakimgpath+")");
             $('.userimgwrapper').attr("data-pro", fakimgpath);
+            $('#uploadblog').attr("data-pro", fakimgpath);
             // return fakimgpath;
         }
         

@@ -34,6 +34,14 @@ router.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
+router.get('/chat', function(req, res){
+    res.sendFile(__dirname + '/chatroom.html');
+});
+
+// router.get('/login', function(req, res){
+//     res.sendFile(__dirname + '/index.html');
+// });
+
 io.on('connection', function (socket) {
     connections.push(socket);
   	console.log('Connected : %s socket connected', connections.length)
@@ -47,52 +55,53 @@ io.on('connection', function (socket) {
   	});
 
   	socket.on('send message', function(data){
-      // data.username,
-      // data.message
-			// console.log(data);
-
   		io.sockets.emit('new message', {msg:data, user: socket.username, socket: socket.id});
   	});
     // Already loging user
     socket.on('setlog', function(data, callback){
       callback(true);
       socket.username = data;
-      users.push({socket: socket.id, username: socket.username});
-      updateUsernames({socket: socket.id, username: socket.username});
+      registername    = data.username;
+      registerprofile = data.profileimg;
+      console.log(registerprofile);
+      users.push({socket: socket.id, username: registername, profileimg: registerprofile});
+      updateUsernames({socket: socket.id, username: registername, profileimg: registerprofile});
     });
   	// New user
   	socket.on('new user', function(data, callback){
   		callback(true);
-  		socket.username	=	data;
-        // users.push(socket.username);
+  		socket.username	=	data.username;
         connectionsmsql.connect(function(error){
             if (!!error) {
                 console.log('Db not connected');
             }else{
                 console.log('Db connected successfully');
-                registername    = socket.username;
+                registername    = data.username;
+                registerpass    = data.userpass;
+                registeremail   = data.useremail;
+                profileimg      = data.profileimg;
                 socket_id       = socket.id;
                 var currentdate = new Date();
-                var datetime =   currentdate.getDate() + "/"
+                var datetime    = currentdate.getDate() + "/"
                                 + (currentdate.getMonth()+1)  + "/"
                                 + currentdate.getFullYear() + "@"
                                 + currentdate.getHours() + ":"
                                 + currentdate.getMinutes();
 
-                var sql = "INSERT INTO users (user_name, socket_id, registered) VALUES ?";
+                var sql = "INSERT INTO users (user_name, profile_image, socket_id, registered, password,email) VALUES ?";
 
-                var values = [[registername,socket_id,datetime]];
+                var values = [[registername,profileimg,socket_id,datetime,registerpass,registeremail]];
 
                 connectionsmsql.query(sql, [values], function (err, result) {
 
                 if (err) throw err;
                     console.log("Number of records inserted: " + result.affectedRows);
+              		users.push({socket: socket.id, username: socket.username, profileimg: profileimg});
+              		// updateUsernames(socket.username);
+              		updateUsernames({socket: socket.id, username: socket.username, profileimg: profileimg});
                 });
             }
         });
-  		users.push({socket: socket.id, username: socket.username});
-  		// updateUsernames(socket.username);
-  		updateUsernames({socket: socket.id, username: socket.username});
       // console.log(socket);
   	});
 
@@ -100,7 +109,22 @@ io.on('connection', function (socket) {
        io.sockets.emit('is-typing-client', {socket: socket.id, username: data.username});
     })
 
+    // socket.on('get users', function(data){
+    //     connectionsmsql.connect(function(error){
+    //         if (!!error) {
+    //             console.log('Db not connected');
+    //         }else{
+    //             con.query('SELECT * FROM employees',function(err,rows){
+    //             if(err) throw err;
+    //                 console.log('Data received from Db:\n');
+    //                 console.log(rows);
+    //             });
+    //         }
+    //     }
+    // })
+
   	function updateUsernames(sinuser){
+        console.log(users);
   		io.sockets.emit('get users', users);
         io.sockets.emit('get single user', sinuser);
   	}
